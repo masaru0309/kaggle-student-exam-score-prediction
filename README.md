@@ -146,3 +146,10 @@ pseudo-labeling など、一部の手法では手元 CV は改善しても Priva
 - OOF prediction を用いたメタ特徴量設計
 - original dataset を活用した data augmentation
 - CV / Public / Private の挙動を踏まえた最終モデル選定
+
+---
+
+## 8. References（参考元）
+* [s6e1] 8.56 | XGBoost with Ridge Regression (Notebook) :  
+https://www.kaggle.com/code/gourabr0y555/s6e1-8-56-xgboost-with-ridge-regression#2.-Feature-Engineering
+* 
