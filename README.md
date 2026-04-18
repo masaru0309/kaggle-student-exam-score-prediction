@@ -100,7 +100,7 @@
 この notebook の構成は、大きく3段階です。
 
 #### 1. RidgeCV による補助予測の作成
-まず、Notebook 2 と同様に RidgeCV を学習し、OOF prediction を `ridge_pred` として作成しました。  
+まず、Notebook 2 と同様に RidgeCV を学習し、OOF prediction を `ridge_pred` として作成しました。ただし今回はもとからある特徴量だけでなく、新規で作成した特徴量を追加して学習させました。  
 この `ridge_pred` は、決定木系モデルだけでは拾いにくい線形的な傾向を補助的に取り込むための特徴量です。
 
 #### 2. OriginalAug XGBoost
