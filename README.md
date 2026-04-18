@@ -43,7 +43,7 @@
   * `study_hours_squared`、`log_study_hours`、`sqrt_study_hours`、`study_bin_num`、ordinal encoding など、実際に有効だった特徴量を追加して改善を検証。
 
 * [03_original_aug_meta_model.ipynb](./03_original_aug_meta_model.ipynb)  
-  * original dataset を train fold 側に追加する augmentation を導入。  
+  * original dataset を train fold 側に追加し、学習データを拡張する。  
   * OriginalAug XGBoost を主軸とし、Meta RidgeCV による最終モデルを構築。  
   * XGBoost のハイパーパラメータ探索には Optuna を用いた。  
   * GitHub 掲載版では Optuna 探索そのものではなく、採用した最終パラメータを直接記載している。
@@ -61,8 +61,9 @@
 ---
 
 ### Notebook 2: RidgeCV + Feature Engineering
-次の段階では、RidgeCV による OOF prediction を `ridge_pred` として作成し、XGBoost の特徴量として追加しました。  
-これにより、決定木系モデルだけでは拾いにくい線形的な傾向を補助的に取り込むことを狙いました。
+次の段階では、RidgeCV による OOF prediction を `ridge_pred` として作成し、XGBoost の特徴量として追加しました。この手法はスタッキングの構造にかなり近いです。実際は RidgeCV の予測結果以外にも、もとからあった `study_hour`のような特徴量や `study_hours_squared` のような新規で作った特徴量を併せて XGBoost に学習させているため、スタッキングとは正式に呼べません。
+
+これにより、XGBoost のような決定木系モデルだけでは拾いにくい線形的な傾向を補助的に取り込むことを狙いました。
 
 また、特徴量エンジニアリングとして以下を採用しました。
 
@@ -74,8 +75,7 @@
 - `facility_rating_ord`
 - `exam_difficulty_ord`
 
-特に `study_hours` 周辺の派生特徴量は比較的安定して有効であり、  
-勉強時間の効果が単純な線形ではないことを示唆していました。
+特に `study_hours` 周辺の派生特徴量は比較的安定して有効であり、勉強時間の効果が単純な線形ではないことを示唆していました。
 
 この notebook の目的は、**OOF prediction を用いた補助特徴量**と、  
 **有効な FE の切り分け**を行うことです。
@@ -105,7 +105,7 @@
 を用いました。
 
 また、OriginalAug XGBoost のハイパーパラメータは、実験段階では **Optuna** を用いて探索しました。  
-ただし、公開版 notebook では可読性を優先し、最終的に採用したパラメータを固定値で記載しています。
+ただし、公開版 notebook では最終的に採用したパラメータを固定値として記載しています。
 
 この notebook の目的は、**特徴量追加より一段抽象度の高い改善**、すなわち
 
