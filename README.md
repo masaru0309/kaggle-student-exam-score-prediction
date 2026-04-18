@@ -12,17 +12,6 @@
 本コンペはすでに終了していたため、**Late Submission** として取り組みました。  
 そのため、CVスコア と Public / Private Leaderboard の両方を見ながら、仮説検証ベースで改善を進めています。
 
-本プロジェクトでは、
-
-- XGBoost による回帰ベースラインの構築
-- RidgeCV の OOF prediction を用いた `ridge_pred` の導入
-- `study_hours` 周辺を中心とした特徴量エンジニアリング
-- original dataset を活用した data augmentation
-- Meta RidgeCV による最終モデルの構築
-- Optuna を用いた XGBoost のハイパーパラメータ探索
-
-までを一通り検証しました。
-
 また、AI は単なるコード生成ツールとしてではなく、仮説を整理し、検証案を比較するための対話的な補助として活用しています。  
 一方で、特徴量の採否や最終モデルの選定は、CV と Leaderboard の挙動を見ながら自分で判断しました。
 
@@ -34,12 +23,11 @@
 このプロジェクトでは、以下の点を示すことを意識しました。
 
 - 回帰タスクにおけるベースライン構築能力
-- OOF prediction を用いたメタ特徴量設計
-- 特徴量エンジニアリングの仮説検証
-- original dataset を活用した data-centric な改善
-- 軽量スタッキングによる最終予測の補正
+- RidgeCV の OOF prediction を用いた `ridge_pred` の導入
+- `study_hours` 周辺を中心とした特徴量エンジニアリングの仮説検証
+- original dataset を活用した学習データの拡張（5. Original Dataset にて後述する）
+- スタッキングの構造を模したモデルによる予測の補正
 - Optuna を用いたハイパーパラメータ探索
-- CV と Public / Private LB のズレを踏まえたモデル選定
 
 ---
 
@@ -48,7 +36,7 @@
 
 * [01_baseline_xgb.ipynb](./01_baseline_xgb.ipynb)  
   * XGBoost を用いた回帰ベースラインを構築。  
-  * 前処理、KFold による検証、submission 作成までの基本フローを整理。
+  * 前処理、KFold による検証、submission 作成までの基本手順を整理。
 
 * [02_ridge_feature_engineering.ipynb](./02_ridge_feature_engineering.ipynb)  
   * RidgeCV による OOF 予測 `ridge_pred` を XGBoost の補助特徴量として導入。  
