@@ -7,7 +7,7 @@
 
 ## 1. Project Overview (プロジェクト概要)
 本リポジトリは、Kaggle「Playground Series - Season 6 Episode 1」における解法コードです。  
-生徒の学習・生活データから **exam_score** を予測する回帰タスク（評価指標：RMSE）に取り組みました。  
+生徒の学習データや生活データ等から**exam_score**を予測する回帰タスク（評価指標：RMSE）に取り組みました。  
 
 ### Results (結果)
 * **Best CV RMSE:** 8.72405  
@@ -16,10 +16,10 @@
 * **Private leaderboard rank:** 4319人中948位（上位約21.9%）
 
 本コンペはすでに終了していたため、**Late Submission** として取り組みました。  
-そのため、CVスコア と Public / Private Leaderboard の両方を見ながら、仮説検証ベースで改善を進めています。
+そのため、CVスコアとPublic/Private Leaderboardの両方を見ながら、スコアの向上に取り組みました。
 
-また、AI は単なるコード生成ツールとしてではなく、仮説を整理し、検証案を比較するための対話的な補助として活用しています。  
-一方で、特徴量の採否や最終モデルの選定は、CV と Leaderboard の挙動を見ながら自分で判断しました。
+また、AI は単なるコード生成ツールとしてではなく、仮説を整理し、検証案を比較するための対話的な補助役として活用しています。  
+一方で、特徴量の採否や最終モデルの選定は、CVとLeaderboardを見ながら自分で判断しました。
 
 * Competition URL: [Playground Series - Season 6 Episode 1](https://www.kaggle.com/competitions/playground-series-s6e1)
 
@@ -38,14 +38,14 @@
 ---
 
 ## 3. Repository Structure (ファイル構成)
-本リポジトリは、スコア改善の流れが分かるように、以下の 3 つの notebook で構成しています。
+本リポジトリは以下の3つのnotebookの順でスコア改善に取り組みました。
 
 * [01_baseline_xgb.ipynb](./01_baseline_xgb.ipynb)  
-  * XGBoost を用いた回帰ベースラインを構築。  
-  * 前処理、KFold による検証、submission 作成までの基本手順を整理。
+  * XGBoostを用いた回帰ベースラインを構築。  
+  * 前処理、KFoldによる検証、submission作成までの基本手順を整理。
 
 * [02_ridge_feature_engineering.ipynb](./02_ridge_feature_engineering.ipynb)  
-  * RidgeCV による OOF 予測 `ridge_pred` を XGBoost の補助特徴量として導入。  
+  * RidgeCVによるOOFの予測値 `ridge_pred` をXGBoostの特徴量の１つとして導入。  
   * `study_hours_squared`、`log_study_hours`、`sqrt_study_hours`、`study_bin_num`、ordinal encoding など、実際に有効だった特徴量を追加して改善を検証。
 
 * [03_original_aug_meta_model.ipynb](./03_original_aug_meta_model.ipynb)  
