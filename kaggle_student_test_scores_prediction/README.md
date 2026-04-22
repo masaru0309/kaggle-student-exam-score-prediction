@@ -38,14 +38,14 @@
 ---
 
 ## 3. Repository Structure (ファイル構成)
-本リポジトリは、スコア改善の流れが分かるように、以下の 3 つの notebook で構成しています。
+本リポジトリは以下の3つのnotebookの順でスコア改善に取り組みました。
 
 * [01_baseline_xgb.ipynb](./01_baseline_xgb.ipynb)  
-  * XGBoost を用いた回帰ベースラインを構築。  
-  * 前処理、KFold による検証、submission 作成までの基本手順を整理。
+  * XGBoostを用いた回帰ベースラインを構築。  
+  * 前処理、KFoldによる検証、submission作成までの基本手順を整理。
 
 * [02_ridge_feature_engineering.ipynb](./02_ridge_feature_engineering.ipynb)  
-  * RidgeCV による OOF 予測 `ridge_pred` を XGBoost の補助特徴量として導入。  
+  * RidgeCVによるOOFの予測値 `ridge_pred` をXGBoostの特徴量の１つとして導入。  
   * `study_hours_squared`、`log_study_hours`、`sqrt_study_hours`、`study_bin_num`、ordinal encoding など、実際に有効だった特徴量を追加して改善を検証。
 
 * [03_original_aug_meta_model.ipynb](./03_original_aug_meta_model.ipynb)  
