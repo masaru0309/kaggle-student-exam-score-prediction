@@ -7,7 +7,7 @@
 
 ## 1. Project Overview (プロジェクト概要)
 本リポジトリは、Kaggle「Playground Series - Season 6 Episode 1」における解法コードです。  
-生徒の学習・生活データから **exam_score** を予測する回帰タスク（評価指標：RMSE）に取り組みました。  
+生徒の学習データや生活データ等から**exam_score**を予測する回帰タスク（評価指標：RMSE）に取り組みました。  
 
 ### Results (結果)
 * **Best CV RMSE:** 8.72405  
@@ -16,10 +16,10 @@
 * **Private leaderboard rank:** 4319人中948位（上位約21.9%）
 
 本コンペはすでに終了していたため、**Late Submission** として取り組みました。  
-そのため、CVスコア と Public / Private Leaderboard の両方を見ながら、仮説検証ベースで改善を進めています。
+そのため、CVスコアとPublic/Private Leaderboardの両方を見ながら、スコアの向上に取り組みました。
 
-また、AI は単なるコード生成ツールとしてではなく、仮説を整理し、検証案を比較するための対話的な補助として活用しています。  
-一方で、特徴量の採否や最終モデルの選定は、CV と Leaderboard の挙動を見ながら自分で判断しました。
+また、AI は単なるコード生成ツールとしてではなく、仮説を整理し、検証案を比較するための対話的な補助役として活用しています。  
+一方で、特徴量の採否や最終モデルの選定は、CVとLeaderboardを見ながら自分で判断しました。
 
 * Competition URL: [Playground Series - Season 6 Episode 1](https://www.kaggle.com/competitions/playground-series-s6e1)
 
