@@ -41,18 +41,17 @@
 本リポジトリは以下の3つのnotebookの順でスコア改善に取り組みました。
 
 * [01_baseline_xgb.ipynb](./01_baseline_xgb.ipynb)  
-  * XGBoostを用いた回帰ベースラインを構築。  
+  * XGBoostを用いたベースラインを構築。  
   * 前処理、KFoldによる検証、submission作成までの基本手順を整理。
 
 * [02_ridge_feature_engineering.ipynb](./02_ridge_feature_engineering.ipynb)  
-  * RidgeCVによるOOFの予測値 `ridge_pred` をXGBoostの特徴量の１つとして導入。  
+  * RidgeCVによるOOFの予測値`ridge_pred`をXGBoostの特徴量の１つとして導入。  
   * `study_hours_squared`、`log_study_hours`、`sqrt_study_hours`、`study_bin_num`、ordinal encoding など、実際に有効だった特徴量を追加して改善を検証。
 
 * [03_original_aug_meta_model.ipynb](./03_original_aug_meta_model.ipynb)  
-  * original dataset を train fold 側に追加し、学習データを拡張する。  
-  * OriginalAug XGBoost を主軸とし、Meta RidgeCV による最終モデルを構築。  
-  * XGBoost のハイパーパラメータ探索には Optuna を用いた。  
-  * GitHub 掲載版では Optuna 探索そのものではなく、採用した最終パラメータを直接記載している。
+  * original datasetをtrain fold側に追加し、学習データを拡張する。  
+  * OriginalAug XGBoostとRidgeCVの予測値を主軸とした、Meta RidgeCVによる最終モデルを構築。  
+  * XGBoostのハイパーパラメータ探索にはOptunaを用いた。（GitHub掲載版ではOptuna探索そのものではなく、採用した最終パラメータを直接記載している。）
 
 ---
 
@@ -60,16 +59,16 @@
 
 ### Notebook 1: Baseline XGBoost
 まずは、XGBoost を用いたシンプルな回帰ベースラインを構築しました。  
-カテゴリ変数は One-Hot Encoding を行い、`KFold (n_splits=5)` によってCVスコア を確認しながら、最小限の前処理で基準スコアを作成しています。
+カテゴリ変数はOne-Hot Encodingを行い、`KFold (n_splits=5)` によってCVスコアを確認しながら、最小限の前処理で作成しています。
 
 この notebook の目的は、以後の改善を評価するための**比較基準**を明確に作ることです。
 
 ---
 
 ### Notebook 2: RidgeCV + Feature Engineering
-次の段階では、RidgeCV による OOF prediction を `ridge_pred` として作成し、XGBoost の特徴量として追加しました。この手法はスタッキングの構造にかなり近いです。実際は RidgeCV の予測結果以外にも、もとからあった `study_hour`のような特徴量や `study_hours_squared` のような新規で作った特徴量を併せて XGBoost に学習させているため、スタッキングとは正式に呼べません。
+次の段階では、RidgeCVによるOOF predictionを`ridge_pred`として作成し、XGBoostの特徴量の１つとして追加しました。この手法はスタッキングの構造にかなり近いです。実際はRidgeCVの予測結果以外にも、もとからあった`study_hour`のような特徴量や`study_hours_squared`のような新規で作った特徴量を併せて XGBoost に学習させているため、スタッキングとは正式に呼べません。
 
-これにより、XGBoost のような決定木系モデルだけでは拾いにくい線形的な傾向を補助的に取り込むことを狙いました。
+これにより、XGBoostのような決定木系モデルだけでは拾いにくい線形的な傾向や特徴も補助的に取り込むことを狙いとしました。
 
 また、特徴量エンジニアリングとして以下を採用しました。
 
@@ -81,33 +80,31 @@
 - `facility_rating_ord`
 - `exam_difficulty_ord`
 
-特に `study_hours` 周辺の派生特徴量は比較的安定して有効であり、勉強時間の効果が単純な線形ではないことを示唆していました。
+特に`study_hours`周辺の派生特徴量は比較的安定して有効であり、勉強時間の効果が非線形的で、はたまた離散的であるように感じました。
 
-この notebook の目的は、**OOF prediction を用いた補助特徴量**と、  
-**有効な FE の切り分け**を行うことです。
+このnotebookの目的は、**別モデルの予測値を用いた補助特徴量の追加**と、**有効なFEの選定**を行うことです。
 
 ---
 
 ### Notebook 3: Original Dataset Augmentation + Two-Stage Meta Model
-最終 notebook では、細かい特徴量追加だけでは改善幅が小さくなってきたため、  
-**学習データの使い方とモデル構造そのものを見直す方針**に切り替えました。
+最終notebookでは細かい特徴量追加だけでは改善幅が小さくなってきたため、**学習データの使い方**と**モデル構造そのものを見直す方針**に切り替えました。
 
-本コンペの train / test データは、もともとの **Exam Score Prediction dataset** を学習した deep learning model から生成された合成データです。  
-つまり、今回のコンペには「元になったデータセット」つまり original dataset が別途存在しており、Kaggle 公式でもその original dataset を学習に活用してよいことが明記されています。
+本コンペのtrain/testデータは、もともとの**Exam Score Prediction dataset**を学習したdeep learning modelから生成された合成データです。  
+つまり、今回のコンペには「元になったデータセット」すなわちoriginal dataset が別途存在しており、Kaggle公式でもそのoriginal datasetを学習に活用してよいことが明記されています。
 
-本プロジェクトでは、この original dataset を追加の学習データとして利用し、予測性能が改善するかを検証しました。  
-ただし、validation fold 側には original dataset を混ぜず、
+本プロジェクトでは、このoriginal datasetを追加の学習データとして利用し、予測性能が改善するかを検証しました。  
+ただし、validation fold側には original dataset を混ぜず、
 
 - 学習: competition train fold + original dataset
 - 検証: competition validation fold
 
 という形にすることで、CV の妥当性を保つように設計しています。
 
-この notebook の構成は、大きく3段階です。
+このnotebookの構成は、大きく3段階です。
 
 #### 1. RidgeCV による補助予測の作成
-まず、Notebook 2 と同様に RidgeCV を学習し、OOF prediction を `ridge_pred` として作成しました。ただし今回はもとからある特徴量だけでなく、新規で作成した特徴量を追加して学習させました。  
-この `ridge_pred` は、決定木系モデルだけでは拾いにくい線形的な傾向を補助的に取り込むための特徴量です。
+まず、Notebook2と同様にRidgeCVを学習し、OOF predictionを `ridge_pred` として作成しました。ただし今回はもとからある特徴量だけでなく、新規で作成した特徴量を追加して学習させました。  
+この `ridge_pred` は前回同様、線形的な傾向や情報を取り込むための特徴量です。
 
 #### 2. OriginalAug XGBoost
 次に、XGBoost の学習時に original dataset を train fold 側へ追加し、学習データを拡張しました。  
