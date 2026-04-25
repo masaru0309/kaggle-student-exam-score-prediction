@@ -29,17 +29,17 @@
 本リポジトリは以下の3つのnotebookの順でスコア改善に取り組みました。
 
 * [01_baseline_xgb.ipynb](./01_baseline_xgb.ipynb)  
-  Private leaderboard score: 8.73770
+  Private leaderboard score: 8.73770（上位約34.4%）  
   * XGBoostを用いたベースラインを構築。  
   * 前処理、KFoldによる検証、submission作成までの基本手順を整理。
 
 * [02_ridge_feature_engineering.ipynb](./02_ridge_feature_engineering.ipynb)  
-  Private leaderboard score: 
+  Private leaderboard score: 8.71942（上位約23.6%）  
   * RidgeCVによるOOFの予測値`ridge_pred`をXGBoostの特徴量の１つとして導入。  
   * `study_hours_squared`、`log_study_hours`、`sqrt_study_hours`、`study_bin_num`、ordinal encoding など、実際に有効だった特徴量を追加して改善を検証。
 
 * [03_original_aug_meta_model.ipynb](./03_original_aug_meta_model.ipynb)  
-  Private leaderboard score: 
+  Private leaderboard score: 8.71041（上位約21.9%）  
   * original datasetをtrain fold側に追加し、train foldを拡張する。  
   * OriginalAug XGBoostとRidgeCVの予測値を主軸とした、Meta RidgeCVによる最終モデルを構築。  
   * XGBoostのハイパーパラメータ探索にはOptunaを用いた。（GitHub掲載版ではOptuna探索そのものではなく、採用した最終パラメータを直接記載している。）
